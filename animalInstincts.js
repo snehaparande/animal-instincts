@@ -10,7 +10,7 @@ const startGame = (events, eventEmitter) => {
   setInterval(() => {
     const event = events[randomInt(events.length)];
     eventEmitter.emit(event);
-  }, 1000);
+  }, 2000);
 };
 
 const main = () => {
