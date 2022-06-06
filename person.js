@@ -1,5 +1,6 @@
 class Person {
-  constructor() {
+  constructor(target) {
+    this.target = target;
     this.position = { x: 0, y: 0 };
   }
 
@@ -19,8 +20,14 @@ class Person {
     this.position.x += 1;
   }
 
+  reached() {
+    return this.position.x === this.target.x &&
+      this.position.y === this.target.y;
+  }
+
   toString() {
-    console.log(`Person is at (${this.position.x}, ${this.position.y})`);
+    console.log(`Person is at (${this.position.x}, ${this.position.y}), 
+    Target is (${this.target.x}, ${this.target.y})`);
   }
 }
 
