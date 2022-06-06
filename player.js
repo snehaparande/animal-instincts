@@ -1,4 +1,4 @@
-class Person {
+class Player {
   constructor(target) {
     this.target = target;
     this.position = { x: 0, y: 0 };
@@ -31,4 +31,4 @@ class Person {
   }
 }
 
-exports.Person = Person;
+exports.Player = Player;

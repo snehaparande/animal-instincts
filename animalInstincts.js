@@ -1,17 +1,21 @@
 const fs = require('fs');
 const { EventEmitter } = require('events');
-const { Person } = require('./person.js');
+const { Player } = require('./player.js');
+
+const winningMessage = () =>
+  console.log('Congrats!!!\n You reached the target.');
 
 const latestEvent = (instructions) =>
-  instructions.trim().split('\n').slice(-1)[0];
+  instructions.trim().split('\n').slice(-1).join('');
 
 const startGame = (eventEmitter, person) => {
+  eventEmitter.emit('game-started');
 
   fs.watchFile('instructions.txt', () => {
-
     const events = fs.readFileSync('instructions.txt', 'utf8');
     const event = latestEvent(events);
     eventEmitter.emit(event);
+
     if (person.reached()) {
       eventEmitter.emit('reached-target');
       fs.unwatchFile('instructions.txt');
@@ -20,16 +24,8 @@ const startGame = (eventEmitter, person) => {
 
 };
 
-const randomInt = (limit) => Math.floor(Math.random() * limit);
-
-const createTarget = () => {
-  return { x: randomInt(10), y: randomInt(10) };
-};
-
-const winningMessage = () =>
-  console.log('Congrats!!!\n You reached the target.');
-
 const addEvents = (eventEmitter, person) => {
+  eventEmitter.on('game-started', () => person.toString());
   eventEmitter.on('maw-maw', () => person.moveFront());
   eventEmitter.on('maw-maw', () => person.toString());
   eventEmitter.on('bhow-bhow', () => person.moveLeft());
@@ -41,14 +37,17 @@ const addEvents = (eventEmitter, person) => {
   eventEmitter.on('reached-target', winningMessage);
 };
 
-const main = () => {
+const randomInt = (limit) => Math.floor(Math.random() * limit);
 
+const targetPosition = () => {
+  return { x: randomInt(10), y: randomInt(10) };
+};
+
+const main = () => {
   const eventEmitter = new EventEmitter();
-  const target = createTarget();
-  const person = new Person(target);
+  const person = new Player(targetPosition());
 
   addEvents(eventEmitter, person);
-
   startGame(eventEmitter, person);
 };
 
