@@ -1,9 +1,6 @@
 const fs = require('fs');
 const { EventEmitter } = require('events');
-
-const moveFront = () => console.log('Move Front');
-const turnLeft = () => console.log('Turn Left >');
-const turnRight = () => console.log('< Turn Right');
+const { Person } = require('./person.js');
 
 const latestEvent = (instructions) =>
   instructions.trim().split('\n').slice(-1)[0];
@@ -22,10 +19,14 @@ const startGame = (eventEmitter) => {
 const main = () => {
 
   const eventEmitter = new EventEmitter();
+  const person = new Person;
 
-  eventEmitter.on('maw-maw', moveFront);
-  eventEmitter.on('bhow-bhow', turnLeft);
-  eventEmitter.on('kaa-kaa', turnRight);
+  eventEmitter.on('maw-maw', () => person.moveFront());
+  eventEmitter.on('maw-maw', () => person.toString());
+  eventEmitter.on('bhow-bhow', () => person.moveLeft());
+  eventEmitter.on('bhow-bhow', () => person.toString());
+  eventEmitter.on('kaa-kaa', () => person.moveRight());
+  eventEmitter.on('kaa-kaa', () => person.toString());
 
   startGame(eventEmitter);
 };
